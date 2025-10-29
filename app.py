@@ -1,13 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
-from functools import wraps
 
 # ---------------- Flask Setup ----------------
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'supersecretkey'
 db = SQLAlchemy(app)
 
 # ---------------- Models ----------------
@@ -32,15 +30,6 @@ class Student(db.Model):
 with app.app_context():
     db.create_all()
 
-# ---------------- Login Decorator ----------------
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'student_id' not in session:
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
 # ---------------- Routes ----------------
 
 # First page: Add student if none exist, else dashboard
@@ -53,14 +42,12 @@ def first_student_form():
 
 # Dashboard
 @app.route('/index')
-@login_required
 def index():
     students = Student.query.all()
     return render_template('index.html', students=students)
 
 # Search
 @app.route('/search', methods=['GET'])
-@login_required
 def search_student():
     query = request.args.get('q', '')
     students = Student.query.filter(Student.fullname.ilike(f'%{query}%')).all()
@@ -68,7 +55,6 @@ def search_student():
 
 # Add student
 @app.route('/add', methods=['GET', 'POST'])
-@login_required
 def add_student():
     if request.method == 'POST':
         data = request.form
@@ -87,7 +73,6 @@ def add_student():
 
 # Edit student
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
 def edit_student(id):
     student = Student.query.get_or_404(id)
     if request.method == 'POST':
@@ -110,34 +95,11 @@ def edit_student(id):
 
 # Delete student
 @app.route('/delete/<int:id>')
-@login_required
 def delete_student(id):
     student = Student.query.get_or_404(id)
     db.session.delete(student)
     db.session.commit()
     return redirect(url_for('index'))
-
-# Login
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']  # simple: birthday as password
-        student = Student.query.filter_by(email=email, birthday=password).first()
-        if student:
-            session['student_id'] = student.id
-            session['student_name'] = student.fullname
-            return redirect(url_for('index'))
-        else:
-            flash('Invalid email or password', 'error')
-            return redirect(url_for('login'))
-    return render_template('login.html')
-
-# Logout
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
 
 # ---------------- API Endpoints ----------------
 @app.route('/api/students', methods=['GET'])
