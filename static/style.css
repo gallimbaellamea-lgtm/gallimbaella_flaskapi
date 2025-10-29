@@ -151,6 +151,23 @@ form .add-btn:hover {
     padding: 6px 12px;
     font-size: 14px;
 }
+/* Add Student Button */
+.form-container button.btn {
+    background: linear-gradient(90deg, #ff7e5f, #feb47b); /* Gradient color */
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.form-container button.btn:hover {
+    background: linear-gradient(90deg, #feb47b, #ff7e5f); /* Hover gradient */
+    transform: scale(1.05);
+}
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 768px) {
