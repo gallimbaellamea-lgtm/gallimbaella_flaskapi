@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Form - San Enrique ISUFST</title>
+</head>
+<body>
+    <h1>{% if edit %}Edit{% else %}Add{% endif %} Student</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.full_name.label }} {{ form.full_name() }}<br>
+        {{ form.birthday.label }} {{ form.birthday() }}<br>
+        {{ form.course.label }} {{ form.course() }}<br>
+        {{ form.section.label }} {{ form.section() }}<br>
+        {{ form.sex.label }} {{ form.sex() }}<br>
+        {{ form.email.label }} {{ form.email() }}<br>
+        {{ form.address.label }} {{ form.address() }}<br>
+        {{ form.hobby.label }} {{ form.hobby() }}<br>
+        {{ form.submit() }}
+    </form>
+    <a href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+</body>
+</html>
