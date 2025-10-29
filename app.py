@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
@@ -25,23 +26,22 @@ class Student(db.Model):
 
 # ---------------- Routes ----------------
 
-# Default route -> show add student form first
+# Redirect main page to Add Student form
 @app.route('/')
 def index():
     return redirect(url_for('add_student'))
 
-# Add student form
+# Add Student
 @app.route('/add', methods=['GET', 'POST'])
 def add_student():
     if request.method == 'POST':
         fullname = request.form['fullname']
         address = request.form['address']
         birthday = request.form['birthday']
-        # calculate age automatically
         birth_date = date.fromisoformat(birthday)
         today = date.today()
         age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-        
+
         sex = request.form['sex']
         course = request.form['course']
         section = request.form['section']
@@ -50,7 +50,7 @@ def add_student():
         contact_number = request.form['contact_number']
         guardian_name = request.form['guardian_name']
         guardian_contact = request.form['guardian_contact']
-        
+
         new_student = Student(
             fullname=fullname, address=address, birthday=birthday, age=age,
             sex=sex, course=course, section=section, email=email, hobby=hobby,
@@ -60,10 +60,10 @@ def add_student():
         db.session.add(new_student)
         db.session.commit()
         return redirect(url_for('dashboard'))
-    
+
     return render_template('add_student.html')
 
-# Dashboard showing all students
+# Dashboard with search
 @app.route('/dashboard')
 def dashboard():
     search_query = request.args.get('search')
@@ -73,7 +73,7 @@ def dashboard():
         students = Student.query.all()
     return render_template('index.html', students=students)
 
-# Edit student
+# Edit Student
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_student(id):
     student = Student.query.get_or_404(id)
@@ -92,13 +92,13 @@ def edit_student(id):
         student.contact_number = request.form['contact_number']
         student.guardian_name = request.form['guardian_name']
         student.guardian_contact = request.form['guardian_contact']
-        
+
         db.session.commit()
         return redirect(url_for('dashboard'))
-    
+
     return render_template('edit_student.html', student=student)
 
-# Delete student
+# Delete Student
 @app.route('/delete/<int:id>')
 def delete_student(id):
     student = Student.query.get_or_404(id)
@@ -106,6 +106,8 @@ def delete_student(id):
     db.session.commit()
     return redirect(url_for('dashboard'))
 
+# ---------------- Run App ----------------
 if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True)
+    if not os.path.exists('students.db'):
+        db.create_all()
+    app.run(host='0.0.0.0', port=5000, debug=True)
