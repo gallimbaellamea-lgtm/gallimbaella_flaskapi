@@ -1,171 +1,138 @@
-/* ---------------- Body ---------------- */
+/* ---------------- Global Styles ---------------- */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
     color: #333;
 }
 
 /* ---------------- Container ---------------- */
 .container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px 40px;
     background-color: #fff;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    min-height: 600px;
 }
 
 /* ---------------- Headings ---------------- */
 h1 {
     text-align: center;
-    color: #444;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* ---------------- Actions ---------------- */
+.actions {
+    text-align: center;
     margin-bottom: 20px;
 }
 
-/* ---------------- Form ---------------- */
-form input[type="text"],
-form input[type="email"],
-form input[type="number"],
-form input[type="date"],
-form select {
-    width: 100%;
-    padding: 8px 10px;
-    margin: 6px 0 12px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.actions form {
+    display: inline-block;
+    margin-left: 10px;
 }
 
-form button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
+.actions input[type="text"] {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.actions button {
+    padding: 6px 12px;
+    font-size: 14px;
     cursor: pointer;
 }
 
-form a {
-    display: inline-block;
-    margin-top: 10px;
-    text-decoration: none;
-    color: white;
-}
-
-/* ---------------- Table ---------------- */
-table {
-    width: 90%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-}
-
-thead {
-    background-color: #007BFF;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
+/* ---------------- Form Inputs ---------------- */
+form input, form select, form button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 16px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14px;
 }
 
 /* ---------------- Buttons ---------------- */
 .btn {
-    display: inline-block;
-    padding: 8px 14px;
     text-decoration: none;
-    color: white;
+    padding: 8px 14px;
     border-radius: 5px;
     font-size: 14px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    margin: 2px 2px;
+    margin: 2px;
+    transition: 0.3s;
     cursor: pointer;
-}
-
-/* Add / Submit Student Button */
-.add-btn {
-    background-color: #28a745; /* green */
-}
-
-.add-btn:hover {
-    background-color: #218838;
-}
-
-/* Edit Button */
-.edit-btn {
-    background-color: #007bff; /* blue */
-}
-
-.edit-btn:hover {
-    background-color: #0069d9;
-}
-
-/* Delete Button */
-.delete-btn {
-    background-color: #dc3545; /* red */
-}
-
-.delete-btn:hover {
-    background-color: #c82333;
-}
-
-/* Back to Dashboard / Secondary Actions */
-.back-btn {
-    background-color: #6c757d; /* gray */
-}
-
-.back-btn:hover {
-    background-color: #5a6268;
-}
-
-/* Search Button */
-.search-btn {
-    background-color: #ffc107; /* yellow */
-    color: #333;
-}
-
-.search-btn:hover {
-    background-color: #e0a800;
-}
-
-/* ---------------- Search and Add ---------------- */
-form .search-btn,
-form .add-btn {
-    width: auto;
     display: inline-block;
-    margin-right: 10px;
+    text-align: center;
 }
 
-/* ---------------- Hover Effects ---------------- */
-.btn:hover {
-    opacity: 0.85;
+.add-btn { background-color: #4CAF50; color: white; }
+.add-btn:hover { background-color: #45a049; }
+
+.edit-btn { background-color: #2196F3; color: white; }
+.edit-btn:hover { background-color: #0b7dda; }
+
+.delete-btn { background-color: #f44336; color: white; }
+.delete-btn:hover { background-color: #da190b; }
+
+.back-btn { background-color: #888; color: white; }
+.back-btn:hover { background-color: #555; }
+
+.search-btn { background-color: #555; color: white; border: none; border-radius: 4px; }
+.search-btn:hover { background-color: #333; }
+
+/* ---------------- Cards Container ---------------- */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Individual Student Card */
+.student-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    padding: 20px;
+    width: 350px;
+    box-sizing: border-box;
     transition: 0.3s;
 }
 
-/* ---------------- Responsive ---------------- */
-@media screen and (max-width: 650px) {
-    .container {
-        width: 90%;
-        padding: 15px;
-    }
-    
-    table, th, td {
-        font-size: 14px;
-    }
+.student-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
 
-    form input, form select, form button {
-        width: 100%;
-    }
+.student-card h2 {
+    margin: 0 0 10px 0;
+}
+
+.student-card p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+/* Card Buttons */
+.card-buttons {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.card-buttons .btn { display: inline-block; margin: 4px; }
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 768px) {
+    .container { padding: 20px; margin: 20px; }
+    .student-card { width: 90%; }
+    .actions input[type="text"] { width: 70%; margin-bottom: 10px; }
+    .actions button { width: 25%; }
 }
