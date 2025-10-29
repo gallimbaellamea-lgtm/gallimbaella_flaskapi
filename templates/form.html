@@ -1,55 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ 'Edit' if student else 'Add' }} Student</title>
+    <title>{{ 'Edit Student' if student else 'Add Student' }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>{{ 'Edit' if student else 'Add' }} Student</h1>
-    <form method="POST">
-        <label>Full Name:</label>
-        <input type="text" name="fullname" value="{{ student.fullname if student else '' }}" required><br>
-
-        <label>Address:</label>
-        <input type="text" name="address" value="{{ student.address if student else '' }}"><br>
-
-        <label>Birthday:</label>
-        <input type="date" name="birthday" value="{{ student.birthday if student else '' }}" required><br>
-
-        <label>Sex:</label>
-        <select name="sex">
-            <option value="Male" {% if student and student.sex=='Male' %}selected{% endif %}>Male</option>
-            <option value="Female" {% if student and student.sex=='Female' %}selected{% endif %}>Female</option>
-        </select><br>
-
-        <label>Course:</label>
-        <select name="course">
-            <option value="BSIT" {% if student and student.course=='BSIT' %}selected{% endif %}>BSIT</option>
-            <option value="BSOA" {% if student and student.course=='BSOA' %}selected{% endif %}>BSOA</option>
-            <option value="BSAG" {% if student and student.course=='BSAG' %}selected{% endif %}>BSAG</option>
-            <option value="BSED" {% if student and student.course=='BSED' %}selected{% endif %}>BSED</option>
-        </select><br>
-
-        <label>Section:</label>
-        <input type="text" name="section" value="{{ student.section if student else '' }}"><br>
-
-        <label>Email:</label>
-        <input type="email" name="email" value="{{ student.email if student else '' }}"><br>
-
-        <label>Hobby:</label>
-        <input type="text" name="hobby" value="{{ student.hobby if student else '' }}"><br>
-
-        <label>Contact Number:</label>
-        <input type="text" name="contact_number" value="{{ student.contact_number if student else '' }}"><br>
-
-        <label>Guardian Name:</label>
-        <input type="text" name="guardian_name" value="{{ student.guardian_name if student else '' }}"><br>
-
-        <label>Guardian Contact:</label>
-        <input type="text" name="guardian_contact" value="{{ student.guardian_contact if student else '' }}"><br>
-
-        <button type="submit">Submit</button>
-    </form>
-    <a href="{{ url_for('index') }}">Back to Dashboard</a>
+    <div class="container">
+        <h1>{{ 'Edit Student' if student else 'Add Student' }}</h1>
+        <form method="post">
+            Fullname: <input type="text" name="fullname" value="{{ student.fullname if student else '' }}" required><br>
+            Address: <input type="text" name="address" value="{{ student.address if student else '' }}"><br>
+            Birthday (YYYY-MM-DD): <input type="text" name="birthday" value="{{ student.birthday if student else '' }}" required><br>
+            Sex: 
+            <select name="sex">
+                <option value="Male" {% if student and student.sex=='Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if student and student.sex=='Female' %}selected{% endif %}>Female</option>
+            </select><br>
+            Course: 
+            <select name="course">
+                <option value="BSIT" {% if student and student.course=='BSIT' %}selected{% endif %}>BSIT</option>
+                <option value="BSOA" {% if student and student.course=='BSOA' %}selected{% endif %}>BSOA</option>
+                <option value="BSAG" {% if student and student.course=='BSAG' %}selected{% endif %}>BSAG</option>
+                <option value="BSED" {% if student and student.course=='BSED' %}selected{% endif %}>BSED</option>
+            </select><br>
+            Section: <input type="text" name="section" value="{{ student.section if student else '' }}"><br>
+            Email: <input type="email" name="email" value="{{ student.email if student else '' }}"><br>
+            Hobby: <input type="text" name="hobby" value="{{ student.hobby if student else '' }}"><br>
+            Contact Number: <input type="text" name="contact_number" value="{{ student.contact_number if student else '' }}"><br>
+            Guardian Name: <input type="text" name="guardian_name" value="{{ student.guardian_name if student else '' }}"><br>
+            Guardian Contact: <input type="text" name="guardian_contact" value="{{ student.guardian_contact if student else '' }}"><br>
+            <button type="submit" class="btn add-btn">{{ 'Update' if student else 'Add Student' }}</button>
+        </form>
+        <a href="{{ url_for('index') }}">Back to Dashboard</a>
+    </div>
 </body>
 </html>
