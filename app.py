@@ -8,7 +8,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecretkey"
 db = SQLAlchemy(app)
 
-# ---------------- Models ----------------
+# ----------------- Model -----------------
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(100), nullable=False)
@@ -24,16 +24,19 @@ class Student(db.Model):
     guardian_name = db.Column(db.String(100))
     guardian_contact = db.Column(db.String(20))
 
-# ---------------- Routes ----------------
+# ----------------- Routes -----------------
+
+# Dashboard / Index - Show all students
 @app.route('/')
 def dashboard():
-    search = request.args.get('search')
-    if search:
-        students = Student.query.filter(Student.fullname.ilike(f"%{search}%")).all()
+    search_query = request.args.get('search')
+    if search_query:
+        students = Student.query.filter(Student.fullname.ilike(f"%{search_query}%")).all()
     else:
         students = Student.query.all()
     return render_template('index.html', students=students)
 
+# Add Student
 @app.route('/add', methods=['GET', 'POST'])
 def add_student():
     if request.method == 'POST':
@@ -41,11 +44,9 @@ def add_student():
             fullname = request.form['fullname']
             address = request.form['address']
             birthday = request.form['birthday']
-            # Compute age
             birth_date = datetime.strptime(birthday, "%Y-%m-%d").date()
             today = date.today()
             age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-
             sex = request.form['sex']
             course = request.form['course']
             section = request.form['section']
@@ -56,18 +57,10 @@ def add_student():
             guardian_contact = request.form.get('guardian_contact', '')
 
             student = Student(
-                fullname=fullname,
-                address=address,
-                birthday=birthday,
-                age=age,
-                sex=sex,
-                course=course,
-                section=section,
-                email=email,
-                hobby=hobby,
-                contact_number=contact_number,
-                guardian_name=guardian_name,
-                guardian_contact=guardian_contact
+                fullname=fullname, address=address, birthday=birthday, age=age,
+                sex=sex, course=course, section=section, email=email,
+                hobby=hobby, contact_number=contact_number,
+                guardian_name=guardian_name, guardian_contact=guardian_contact
             )
             db.session.add(student)
             db.session.commit()
@@ -77,9 +70,9 @@ def add_student():
             print("Error:", e)
             flash("Failed to add student. Please check your input.", "danger")
             return redirect(url_for('add_student'))
-
     return render_template('add_student.html')
 
+# Edit Student
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_student(id):
     student = Student.query.get_or_404(id)
@@ -107,9 +100,9 @@ def edit_student(id):
             print("Error:", e)
             flash("Failed to update student.", "danger")
             return redirect(url_for('edit_student', id=id))
-
     return render_template('edit_student.html', student=student)
 
+# Delete Student
 @app.route('/delete/<int:id>')
 def delete_student(id):
     student = Student.query.get_or_404(id)
@@ -122,7 +115,7 @@ def delete_student(id):
         flash("Failed to delete student.", "danger")
     return redirect(url_for('dashboard'))
 
-# ---------------- Initialize Database ----------------
+# ----------------- Initialize DB -----------------
 with app.app_context():
     db.create_all()
 
