@@ -7,6 +7,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# ---------------- Models ----------------
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(100), nullable=False)
@@ -39,6 +40,11 @@ class Student(db.Model):
             "guardian_contact": self.guardian_contact
         }
 
+# ---------------- Create Tables Automatically ----------------
+with app.app_context():
+    db.create_all()
+
+# ---------------- Routes ----------------
 @app.route('/')
 def index():
     students = Student.query.all()
@@ -102,6 +108,7 @@ def delete_student(id):
     db.session.commit()
     return redirect(url_for('index'))
 
+# ---------------- API Endpoints ----------------
 @app.route('/api/students', methods=['GET'])
 def api_get_students():
     students = Student.query.all()
@@ -166,6 +173,6 @@ def api_delete_student(id):
     db.session.commit()
     return jsonify({"message":"Student deleted successfully"})
 
+# ---------------- Run App ----------------
 if __name__ == '__main__':
-    db.create_all()
     app.run(host="0.0.0.0", port=5000, debug=True)
