@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
+from functools import wraps
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = 'supersecretkey'
 db = SQLAlchemy(app)
 
 # ---------------- Models ----------------
@@ -17,68 +19,66 @@ class Student(db.Model):
     sex = db.Column(db.String(10))
     course = db.Column(db.String(10))
     section = db.Column(db.String(20))
-    email = db.Column(db.String(100))
+    email = db.Column(db.String(100), unique=True)
     hobby = db.Column(db.String(100))
     contact_number = db.Column(db.String(20))
     guardian_name = db.Column(db.String(100))
     guardian_contact = db.Column(db.String(20))
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "fullname": self.fullname,
-            "address": self.address,
-            "birthday": self.birthday,
-            "age": self.age,
-            "sex": self.sex,
-            "course": self.course,
-            "section": self.section,
-            "email": self.email,
-            "hobby": self.hobby,
-            "contact_number": self.contact_number,
-            "guardian_name": self.guardian_name,
-            "guardian_contact": self.guardian_contact
-        }
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
 
-# ---------------- Create Tables Automatically ----------------
 with app.app_context():
     db.create_all()
 
+# ---------------- Login Decorator ----------------
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'student_id' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 # ---------------- Routes ----------------
+
+# First page: if no students, go to Add Student form; else dashboard
 @app.route('/')
+def first_student_form():
+    if Student.query.count() == 0:
+        return redirect(url_for('add_student'))
+    else:
+        return redirect(url_for('index'))
+
+# Dashboard
+@app.route('/index')
+@login_required
 def index():
     students = Student.query.all()
     return render_template('index.html', students=students)
 
+# Add Student
 @app.route('/add', methods=['GET', 'POST'])
+@login_required
 def add_student():
     if request.method == 'POST':
         data = request.form
         birthday = data['birthday']
-        birth_year = int(birthday.split('-')[0])
-        today = date.today()
-        age = today.year - birth_year
-
+        age = date.today().year - int(birthday.split('-')[0])
         new_student = Student(
-            fullname=data['fullname'],
-            address=data['address'],
-            birthday=birthday,
-            age=age,
-            sex=data['sex'],
-            course=data['course'],
-            section=data['section'],
-            email=data['email'],
-            hobby=data['hobby'],
-            contact_number=data['contact_number'],
-            guardian_name=data['guardian_name'],
-            guardian_contact=data['guardian_contact']
+            fullname=data['fullname'], address=data['address'], birthday=birthday,
+            age=age, sex=data['sex'], course=data['course'], section=data['section'],
+            email=data['email'], hobby=data['hobby'], contact_number=data['contact_number'],
+            guardian_name=data['guardian_name'], guardian_contact=data['guardian_contact']
         )
         db.session.add(new_student)
         db.session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('index'))  # after adding, go to dashboard
     return render_template('form.html', student=None)
 
+# Edit Student
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_student(id):
     student = Student.query.get_or_404(id)
     if request.method == 'POST':
@@ -86,9 +86,7 @@ def edit_student(id):
         student.fullname = data['fullname']
         student.address = data['address']
         student.birthday = data['birthday']
-        birth_year = int(student.birthday.split('-')[0])
-        today = date.today()
-        student.age = today.year - birth_year
+        student.age = date.today().year - int(student.birthday.split('-')[0])
         student.sex = data['sex']
         student.course = data['course']
         student.section = data['section']
@@ -101,77 +99,53 @@ def edit_student(id):
         return redirect(url_for('index'))
     return render_template('form.html', student=student)
 
+# Delete Student
 @app.route('/delete/<int:id>')
+@login_required
 def delete_student(id):
     student = Student.query.get_or_404(id)
     db.session.delete(student)
     db.session.commit()
     return redirect(url_for('index'))
 
+# Search Students
+@app.route('/search', methods=['GET'])
+@login_required
+def search_student():
+    query = request.args.get('q', '')
+    students = Student.query.filter(Student.fullname.ilike(f'%{query}%')).all()
+    return render_template('index.html', students=students, search_query=query)
+
+# Login / Logout
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']  # birthday as simple password
+        student = Student.query.filter_by(email=email, birthday=password).first()
+        if student:
+            session['student_id'] = student.id
+            session['student_name'] = student.fullname
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid email or password', 'error')
+            return redirect(url_for('login'))
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
 # ---------------- API Endpoints ----------------
 @app.route('/api/students', methods=['GET'])
 def api_get_students():
-    students = Student.query.all()
-    return jsonify([s.to_dict() for s in students])
+    return jsonify([s.to_dict() for s in Student.query.all()])
 
 @app.route('/api/students/<int:id>', methods=['GET'])
 def api_get_student(id):
     student = Student.query.get_or_404(id)
     return jsonify(student.to_dict())
-
-@app.route('/api/students', methods=['POST'])
-def api_add_student():
-    data = request.json
-    birthday = data.get('birthday', '2000-01-01')
-    birth_year = int(birthday.split('-')[0])
-    today = date.today()
-    age = today.year - birth_year
-
-    new_student = Student(
-        fullname=data['fullname'],
-        address=data.get('address', ''),
-        birthday=birthday,
-        age=age,
-        sex=data.get('sex',''),
-        course=data.get('course',''),
-        section=data.get('section',''),
-        email=data.get('email',''),
-        hobby=data.get('hobby',''),
-        contact_number=data.get('contact_number',''),
-        guardian_name=data.get('guardian_name',''),
-        guardian_contact=data.get('guardian_contact','')
-    )
-    db.session.add(new_student)
-    db.session.commit()
-    return jsonify(new_student.to_dict()), 201
-
-@app.route('/api/students/<int:id>', methods=['PUT'])
-def api_update_student(id):
-    student = Student.query.get_or_404(id)
-    data = request.json
-    student.fullname = data.get('fullname', student.fullname)
-    student.address = data.get('address', student.address)
-    student.birthday = data.get('birthday', student.birthday)
-    birth_year = int(student.birthday.split('-')[0])
-    today = date.today()
-    student.age = today.year - birth_year
-    student.sex = data.get('sex', student.sex)
-    student.course = data.get('course', student.course)
-    student.section = data.get('section', student.section)
-    student.email = data.get('email', student.email)
-    student.hobby = data.get('hobby', student.hobby)
-    student.contact_number = data.get('contact_number', student.contact_number)
-    student.guardian_name = data.get('guardian_name', student.guardian_name)
-    student.guardian_contact = data.get('guardian_contact', student.guardian_contact)
-    db.session.commit()
-    return jsonify(student.to_dict())
-
-@app.route('/api/students/<int:id>', methods=['DELETE'])
-def api_delete_student(id):
-    student = Student.query.get_or_404(id)
-    db.session.delete(student)
-    db.session.commit()
-    return jsonify({"message":"Student deleted successfully"})
 
 # ---------------- Run App ----------------
 if __name__ == '__main__':
