@@ -7,7 +7,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# ---------------- Models ----------------
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(100), nullable=False)
@@ -40,7 +39,6 @@ class Student(db.Model):
             "guardian_contact": self.guardian_contact
         }
 
-# ---------------- Web Routes ----------------
 @app.route('/')
 def index():
     students = Student.query.all()
@@ -104,7 +102,6 @@ def delete_student(id):
     db.session.commit()
     return redirect(url_for('index'))
 
-# ---------------- API Routes ----------------
 @app.route('/api/students', methods=['GET'])
 def api_get_students():
     students = Student.query.all()
@@ -128,14 +125,14 @@ def api_add_student():
         address=data.get('address', ''),
         birthday=birthday,
         age=age,
-        sex=data.get('sex', ''),
-        course=data.get('course', ''),
-        section=data.get('section', ''),
-        email=data.get('email', ''),
-        hobby=data.get('hobby', ''),
-        contact_number=data.get('contact_number', ''),
-        guardian_name=data.get('guardian_name', ''),
-        guardian_contact=data.get('guardian_contact', '')
+        sex=data.get('sex',''),
+        course=data.get('course',''),
+        section=data.get('section',''),
+        email=data.get('email',''),
+        hobby=data.get('hobby',''),
+        contact_number=data.get('contact_number',''),
+        guardian_name=data.get('guardian_name',''),
+        guardian_contact=data.get('guardian_contact','')
     )
     db.session.add(new_student)
     db.session.commit()
@@ -167,9 +164,8 @@ def api_delete_student(id):
     student = Student.query.get_or_404(id)
     db.session.delete(student)
     db.session.commit()
-    return jsonify({"message": "Student deleted successfully"})
+    return jsonify({"message":"Student deleted successfully"})
 
-# ---------------- Run App ----------------
 if __name__ == '__main__':
-    db.create_all()  # Initialize DB before starting
+    db.create_all()
     app.run(host="0.0.0.0", port=5000, debug=True)
