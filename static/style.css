@@ -52,7 +52,7 @@ form a {
     display: inline-block;
     margin-top: 10px;
     text-decoration: none;
-    color: #555;
+    color: white;
 }
 
 /* ---------------- Table ---------------- */
@@ -82,29 +82,62 @@ tr:nth-child(even) {
 
 /* ---------------- Buttons ---------------- */
 .btn {
-    padding: 6px 12px;
+    display: inline-block;
+    padding: 8px 14px;
     text-decoration: none;
     color: white;
-    border-radius: 4px;
+    border-radius: 5px;
     font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin: 2px 2px;
+    cursor: pointer;
 }
 
+/* Add / Submit Student Button */
 .add-btn {
-    background-color: #28a745;
+    background-color: #28a745; /* green */
 }
 
+.add-btn:hover {
+    background-color: #218838;
+}
+
+/* Edit Button */
 .edit-btn {
-    background-color: #007bff;
+    background-color: #007bff; /* blue */
 }
 
+.edit-btn:hover {
+    background-color: #0069d9;
+}
+
+/* Delete Button */
 .delete-btn {
-    background-color: #dc3545;
+    background-color: #dc3545; /* red */
 }
 
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Back to Dashboard / Secondary Actions */
+.back-btn {
+    background-color: #6c757d; /* gray */
+}
+
+.back-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Search Button */
 .search-btn {
-    background-color: #ffc107;
+    background-color: #ffc107; /* yellow */
     color: #333;
-    border-radius: 4px;
+}
+
+.search-btn:hover {
+    background-color: #e0a800;
 }
 
 /* ---------------- Search and Add ---------------- */
