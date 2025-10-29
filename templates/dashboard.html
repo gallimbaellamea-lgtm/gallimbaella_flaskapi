@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - San Enrique ISUFST</title>
+</head>
+<body>
+    <h1>Student Dashboard</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th><th>Full Name</th><th>Age</th><th>Course</th><th>Section</th><th>Sex</th><th>Email</th><th>Address</th><th>Hobby</th><th>Actions</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.full_name }}</td>
+            <td>{{ student.age }}</td>
+            <td>{{ student.course }}</td>
+            <td>{{ student.section }}</td>
+            <td>{{ student.sex }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.address }}</td>
+            <td>{{ student.hobby }}</td>
+            <td>
+                <a href="{{ url_for('edit_student', id=student.id) }}">Edit</a>
+                <form action="{{ url_for('delete_student', id=student.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('index') }}">Add New Student</a>
+</body>
+</html>
