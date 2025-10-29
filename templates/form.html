@@ -1,63 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ 'Edit Student' if student else 'Add Student' }}</title>
+    <title>{{ 'Edit' if student else 'Add' }} Student</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>{{ 'Edit Student' if student else 'Add Student' }}</h1>
+<div class="container">
+    <h1>{{ 'Edit' if student else 'Add New' }} Student</h1>
+    <form method="post">
+        <input type="text" name="fullname" placeholder="Full Name" value="{{ student.fullname if student else '' }}" required>
+        <input type="text" name="address" placeholder="Address" value="{{ student.address if student else '' }}" required>
+        <input type="date" name="birthday" placeholder="Birthday" value="{{ student.birthday if student else '' }}" required>
+        <input type="number" name="age" placeholder="Age" value="{{ student.age if student else '' }}" readonly>
+        <select name="sex" required>
+            <option value="">Select Sex</option>
+            <option value="Male" {% if student and student.sex=='Male' %}selected{% endif %}>Male</option>
+            <option value="Female" {% if student and student.sex=='Female' %}selected{% endif %}>Female</option>
+        </select>
+        <select name="course" required>
+            <option value="">Select Course</option>
+            <option value="BSIT" {% if student and student.course=='BSIT' %}selected{% endif %}>BSIT</option>
+            <option value="BSOA" {% if student and student.course=='BSOA' %}selected{% endif %}>BSOA</option>
+            <option value="BSAG" {% if student and student.course=='BSAG' %}selected{% endif %}>BSAG</option>
+            <option value="BSED" {% if student and student.course=='BSED' %}selected{% endif %}>BSED</option>
+        </select>
+        <input type="text" name="section" placeholder="Section" value="{{ student.section if student else '' }}" required>
+        <input type="email" name="email" placeholder="Email" value="{{ student.email if student else '' }}" required>
+        <input type="text" name="hobby" placeholder="Hobby" value="{{ student.hobby if student else '' }}">
+        <input type="text" name="contact_number" placeholder="Contact Number" value="{{ student.contact_number if student else '' }}" required>
+        <input type="text" name="guardian_name" placeholder="Guardian Name" value="{{ student.guardian_name if student else '' }}" required>
+        <input type="text" name="guardian_contact" placeholder="Guardian Contact" value="{{ student.guardian_contact if student else '' }}" required>
 
-        <form method="post">
-            <label>Fullname:</label>
-            <input type="text" name="fullname" value="{{ student.fullname if student else '' }}" required>
+        <button type="submit" class="btn add-btn">{{ 'Update' if student else 'Add' }}</button>
+        <a href="{{ url_for('index') }}" class="btn back-btn">Back to Dashboard</a>
+    </form>
+</div>
 
-            <label>Address:</label>
-            <input type="text" name="address" value="{{ student.address if student else '' }}" required>
+<script>
+    // Auto-compute age from birthday
+    const birthdayInput = document.querySelector('input[name="birthday"]');
+    const ageInput = document.querySelector('input[name="age"]');
 
-            <label>Birthday:</label>
-            <input type="date" name="birthday" value="{{ student.birthday if student else '' }}" required>
-
-            <label>Sex:</label>
-            <select name="sex" required>
-                <option value="">Select Sex</option>
-                <option value="Male" {% if student and student.sex=='Male' %}selected{% endif %}>Male</option>
-                <option value="Female" {% if student and student.sex=='Female' %}selected{% endif %}>Female</option>
-            </select>
-
-            <label>Course:</label>
-            <select name="course" required>
-                <option value="">Select Course</option>
-                <option value="BSIT" {% if student and student.course=='BSIT' %}selected{% endif %}>BSIT</option>
-                <option value="BSOA" {% if student and student.course=='BSOA' %}selected{% endif %}>BSOA</option>
-                <option value="BSAG" {% if student and student.course=='BSAG' %}selected{% endif %}>BSAG</option>
-                <option value="BSED" {% if student and student.course=='BSED' %}selected{% endif %}>BSED</option>
-            </select>
-
-            <label>Section:</label>
-            <input type="text" name="section" value="{{ student.section if student else '' }}" required>
-
-            <label>Email:</label>
-            <input type="email" name="email" value="{{ student.email if student else '' }}" required>
-
-            <label>Hobby:</label>
-            <input type="text" name="hobby" value="{{ student.hobby if student else '' }}">
-
-            <label>Contact Number:</label>
-            <input type="text" name="contact_number" value="{{ student.contact_number if student else '' }}" required>
-
-            <label>Guardian Name:</label>
-            <input type="text" name="guardian_name" value="{{ student.guardian_name if student else '' }}" required>
-
-            <label>Guardian Contact:</label>
-            <input type="text" name="guardian_contact" value="{{ student.guardian_contact if student else '' }}" required>
-
-            <!-- Submit button -->
-            <button type="submit" class="btn add-btn">{{ 'Update Student' if student else 'Add Student' }}</button>
-
-            <!-- Back to Dashboard -->
-            <a href="{{ url_for('index') }}" class="btn back-btn">Back to Dashboard</a>
-        </form>
-    </div>
+    birthdayInput.addEventListener('change', () => {
+        const birthDate = new Date(birthdayInput.value);
+        const ageDifMs = Date.now() - birthDate.getTime();
+        const ageDate = new Date(ageDifMs);
+        ageInput.value = Math.abs(ageDate.getUTCFullYear() - 1970);
+    });
+</script>
 </body>
 </html>
