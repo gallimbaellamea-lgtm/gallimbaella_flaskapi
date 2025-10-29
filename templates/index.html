@@ -8,10 +8,10 @@
 <div class="container">
     <h1>Student Dashboard</h1>
 
-    <!-- Actions -->
+    <!-- Actions: Add + Search -->
     <div class="actions">
         <a href="{{ url_for('add_student') }}" class="btn add-btn">Add New Student</a>
-        <form method="get" style="display:inline-block;">
+        <form method="get">
             <input type="text" name="search" placeholder="Search by fullname" value="{{ request.args.get('search','') }}">
             <button type="submit" class="btn search-btn">Search</button>
         </form>
