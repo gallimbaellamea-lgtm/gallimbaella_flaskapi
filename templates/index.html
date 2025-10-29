@@ -5,53 +5,39 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Student Dashboard</h1>
+<div class="container">
+    <h1>Student Dashboard</h1>
 
-        <!-- Actions: Add + Search -->
-        <div class="actions">
-            <a href="{{ url_for('add_student') }}" class="btn add-btn">Add New Student</a>
-
-            <form method="get">
-                <input type="text" name="search" placeholder="Search by fullname" value="{{ request.args.get('search', '') }}">
-                <button type="submit" class="btn search-btn">Search</button>
-            </form>
-        </div>
-
-        <!-- Student Table -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Fullname</th>
-                    <th>Course</th>
-                    <th>Section</th>
-                    <th>Email</th>
-                    <th>Contact</th>
-                    <th>Guardian</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for student in students %}
-                <tr>
-                    <td>{{ student.fullname }}</td>
-                    <td>{{ student.course }}</td>
-                    <td>{{ student.section }}</td>
-                    <td>{{ student.email }}</td>
-                    <td>{{ student.contact_number }}</td>
-                    <td>{{ student.guardian_name }}<br>{{ student.guardian_contact }}</td>
-                    <td>
-                        <a href="{{ url_for('edit_student', id=student.id) }}" class="btn edit-btn">Edit</a>
-                        <a href="{{ url_for('delete_student', id=student.id) }}" class="btn delete-btn" onclick="return confirm('Are you sure?');">Delete</a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="7" style="text-align:center;">No students found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Actions -->
+    <div class="actions">
+        <a href="{{ url_for('add_student') }}" class="btn add-btn">Add New Student</a>
+        <form method="get" style="display:inline-block;">
+            <input type="text" name="search" placeholder="Search by fullname" value="{{ request.args.get('search','') }}">
+            <button type="submit" class="btn search-btn">Search</button>
+        </form>
     </div>
+
+    <!-- Student Cards -->
+    <div class="cards-container">
+        {% for student in students %}
+        <div class="student-card">
+            <h2>{{ student.fullname }}</h2>
+            <p><strong>Course:</strong> {{ student.course }} | <strong>Section:</strong> {{ student.section }}</p>
+            <p><strong>Email:</strong> {{ student.email }} | <strong>Contact:</strong> {{ student.contact_number }}</p>
+            <p><strong>Address:</strong> {{ student.address }}</p>
+            <p><strong>Birthday:</strong> {{ student.birthday }} | <strong>Age:</strong> {{ student.age }} | <strong>Sex:</strong> {{ student.sex }}</p>
+            <p><strong>Hobby:</strong> {{ student.hobby }}</p>
+            <p><strong>Guardian:</strong> {{ student.guardian_name }} | <strong>Contact:</strong> {{ student.guardian_contact }}</p>
+
+            <div class="card-buttons">
+                <a href="{{ url_for('edit_student', id=student.id) }}" class="btn edit-btn">Edit</a>
+                <a href="{{ url_for('delete_student', id=student.id) }}" class="btn delete-btn" onclick="return confirm('Are you sure?');">Delete</a>
+            </div>
+        </div>
+        {% else %}
+        <p style="text-align:center;">No students found.</p>
+        {% endfor %}
+    </div>
+</div>
 </body>
 </html>
