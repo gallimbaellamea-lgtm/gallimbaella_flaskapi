@@ -33,12 +33,13 @@ h1 {
 
 .actions input[type="text"] {
     padding: 8px 10px;
-    border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 14px;
+    border: 1px solid #ccc;
+    width: 200px;
 }
 
-.actions button, .btn {
+/* ---------------- Buttons ---------------- */
+.btn {
     padding: 8px 14px;
     border-radius: 6px;
     font-size: 14px;
@@ -47,37 +48,26 @@ h1 {
     text-decoration: none;
     color: white;
     transition: 0.3s;
+    display: inline-block;
+    width: auto;
 }
 
-/* ---------------- Button Colors ---------------- */
-.add-btn { background-color: #28a745; }
-.add-btn:hover { background-color: #218838; }
+.add-btn { background-color: #4caf50; }
+.add-btn:hover { background-color: #45a049; }
 
-.edit-btn { background-color: #007bff; }
-.edit-btn:hover { background-color: #0056b3; }
+.edit-btn { background-color: #2196f3; }
+.edit-btn:hover { background-color: #0b7dda; }
 
-.delete-btn { background-color: #dc3545; }
-.delete-btn:hover { background-color: #c82333; }
+.delete-btn { background-color: #f44336; }
+.delete-btn:hover { background-color: #da190b; }
 
-.back-btn { background-color: #6c757d; }
-.back-btn:hover { background-color: #5a6268; }
+.back-btn { background-color: #777; }
+.back-btn:hover { background-color: #555; }
 
-.search-btn { background-color: #343a40; }
-.search-btn:hover { background-color: #23272b; }
+.search-btn { background-color: #ff9800; }
+.search-btn:hover { background-color: #e68a00; }
 
-/* ---------------- Forms ---------------- */
-form input, form select, form button {
-    display: block;
-    width: 100%;
-    margin-bottom: 12px;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-/* ---------------- Cards Container ---------------- */
+/* ---------------- Cards ---------------- */
 .cards-container {
     display: flex;
     flex-wrap: wrap;
@@ -85,38 +75,42 @@ form input, form select, form button {
     justify-content: center;
 }
 
-/* ---------------- Student Card ---------------- */
 .student-card {
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     padding: 20px;
-    width: 350px;
+    width: 300px;
     transition: 0.3s;
 }
 
 .student-card:hover {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: translateY(-3px);
 }
 
 .student-card h2 {
-    margin: 0 0 10px;
-    font-size: 20px;
+    margin-top: 0;
 }
 
-.student-card p {
-    margin: 6px 0;
-    font-size: 14px;
-}
-
-/* ---------------- Card Buttons ---------------- */
 .card-buttons {
-    text-align: center;
     margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
-.card-buttons .btn {
-    margin: 4px;
+/* ---------------- Form ---------------- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+form input, form select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* ---------------- Responsive ---------------- */
