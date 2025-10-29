@@ -1,61 +1,138 @@
+/* ---------------- Body ---------------- */
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
+    padding: 0;
     background-color: #f4f4f4;
-}
-
-h1 {
-    text-align: center;
     color: #333;
 }
 
-table {
+/* ---------------- Container ---------------- */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+/* ---------------- Headings ---------------- */
+h1 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* ---------------- Form ---------------- */
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form input[type="date"],
+form select {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #aaa;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-
-tr:nth-child(even) {
-    background-color: #e9e9e9;
-}
-
-a.button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 8px 12px;
-    text-decoration: none;
+    padding: 8px 10px;
+    margin: 6px 0 12px 0;
+    border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-a.button:hover {
-    background-color: #45a049;
-}
-
-form label {
-    display: inline-block;
-    width: 150px;
-    margin-top: 10px;
-}
-
-form input, form select {
-    padding: 5px;
-    margin-top: 10px;
+    box-sizing: border-box;
 }
 
 form button {
-    margin-top: 15px;
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
     border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+form a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #555;
+}
+
+/* ---------------- Table ---------------- */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+thead {
+    background-color: #007BFF;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* ---------------- Buttons ---------------- */
+.btn {
+    padding: 6px 12px;
+    text-decoration: none;
+    color: white;
     border-radius: 4px;
+    font-size: 14px;
+}
+
+.add-btn {
+    background-color: #28a745;
+}
+
+.edit-btn {
+    background-color: #007bff;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.search-btn {
+    background-color: #ffc107;
+    color: #333;
+    border-radius: 4px;
+}
+
+/* ---------------- Search and Add ---------------- */
+form .search-btn,
+form .add-btn {
+    width: auto;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* ---------------- Hover Effects ---------------- */
+.btn:hover {
+    opacity: 0.85;
+    transition: 0.3s;
+}
+
+/* ---------------- Responsive ---------------- */
+@media screen and (max-width: 650px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+    
+    table, th, td {
+        font-size: 14px;
+    }
+
+    form input, form select, form button {
+        width: 100%;
+    }
 }
