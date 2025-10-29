@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Student Information Management</title>
+    <title>Student Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Student Information Management System</h1>
-    <a href="{{ url_for('add_student') }}" class="button">Add New Student</a>
-    <table>
-        <tr>
-            <th>Full Name</th>
-            <th>Course</th>
-            <th>Section</th>
-            <th>Age</th>
-            <th>Sex</th>
-            <th>Actions</th>
-        </tr>
-        {% for s in students %}
-        <tr>
-            <td>{{ s.fullname }}</td>
-            <td>{{ s.course }}</td>
-            <td>{{ s.section }}</td>
-            <td>{{ s.age }}</td>
-            <td>{{ s.sex }}</td>
-            <td>
-                <a href="{{ url_for('edit_student', id=s.id) }}">Edit</a> |
-                <a href="{{ url_for('delete_student', id=s.id) }}" onclick="return confirm('Delete this student?')">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        <h1>Student Dashboard</h1>
+
+        <!-- Actions: Add + Search -->
+        <div class="actions">
+            <a href="{{ url_for('add_student') }}" class="btn add-btn">Add New Student</a>
+
+            <form method="get">
+                <input type="text" name="search" placeholder="Search by fullname" value="{{ request.args.get('search', '') }}">
+                <button type="submit" class="btn search-btn">Search</button>
+            </form>
+        </div>
+
+        <!-- Student Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Fullname</th>
+                    <th>Course</th>
+                    <th>Section</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Guardian</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.fullname }}</td>
+                    <td>{{ student.course }}</td>
+                    <td>{{ student.section }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.contact_number }}</td>
+                    <td>{{ student.guardian_name }}<br>{{ student.guardian_contact }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_student', id=student.id) }}" class="btn edit-btn">Edit</a>
+                        <a href="{{ url_for('delete_student', id=student.id) }}" class="btn delete-btn" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" style="text-align:center;">No students found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
