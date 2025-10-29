@@ -11,94 +11,106 @@ db = SQLAlchemy(app)
 # ---------------- Models ----------------
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    fullname = db.Column(db.String(100))
-    address = db.Column(db.String(200))
-    birthday = db.Column(db.String(20))
-    age = db.Column(db.Integer)
-    sex = db.Column(db.String(10))
-    course = db.Column(db.String(20))
-    section = db.Column(db.String(20))
-    email = db.Column(db.String(100))
+    fullname = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(200), nullable=False)
+    birthday = db.Column(db.String(20), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    sex = db.Column(db.String(10), nullable=False)
+    course = db.Column(db.String(20), nullable=False)
+    section = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
     hobby = db.Column(db.String(100))
     contact_number = db.Column(db.String(20))
     guardian_name = db.Column(db.String(100))
     guardian_contact = db.Column(db.String(20))
 
 # ---------------- Routes ----------------
-
-# Redirect main page to Add Student form
 @app.route('/')
-def index():
-    return redirect(url_for('add_student'))
+def home():
+    return redirect(url_for('add_student'))  # First page shows the form
 
-# Add Student
 @app.route('/add', methods=['GET', 'POST'])
 def add_student():
-    if request.method == 'POST':
-        fullname = request.form['fullname']
-        address = request.form['address']
-        birthday = request.form['birthday']
-        birth_date = date.fromisoformat(birthday)
-        today = date.today()
-        age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+    try:
+        if request.method == 'POST':
+            fullname = request.form.get('fullname', '').strip()
+            address = request.form.get('address', '').strip()
+            birthday = request.form.get('birthday', '').strip()
 
-        sex = request.form['sex']
-        course = request.form['course']
-        section = request.form['section']
-        email = request.form['email']
-        hobby = request.form['hobby']
-        contact_number = request.form['contact_number']
-        guardian_name = request.form['guardian_name']
-        guardian_contact = request.form['guardian_contact']
+            # Safely calculate age
+            try:
+                birth_year = int(birthday.split("-")[0])
+                today = date.today()
+                age = today.year - birth_year
+            except Exception:
+                age = 0
 
-        new_student = Student(
-            fullname=fullname, address=address, birthday=birthday, age=age,
-            sex=sex, course=course, section=section, email=email, hobby=hobby,
-            contact_number=contact_number, guardian_name=guardian_name,
-            guardian_contact=guardian_contact
-        )
-        db.session.add(new_student)
-        db.session.commit()
-        return redirect(url_for('dashboard'))
+            sex = request.form.get('sex', '').strip()
+            course = request.form.get('course', '').strip()
+            section = request.form.get('section', '').strip()
+            email = request.form.get('email', '').strip()
+            hobby = request.form.get('hobby', '').strip()
+            contact_number = request.form.get('contact_number', '').strip()
+            guardian_name = request.form.get('guardian_name', '').strip()
+            guardian_contact = request.form.get('guardian_contact', '').strip()
 
-    return render_template('add_student.html')
+            new_student = Student(
+                fullname=fullname,
+                address=address,
+                birthday=birthday,
+                age=age,
+                sex=sex,
+                course=course,
+                section=section,
+                email=email,
+                hobby=hobby,
+                contact_number=contact_number,
+                guardian_name=guardian_name,
+                guardian_contact=guardian_contact
+            )
+            db.session.add(new_student)
+            db.session.commit()
+            return redirect(url_for('dashboard'))
 
-# Dashboard with search
+        return render_template('add_student.html')
+
+    except Exception as e:
+        print("Error adding student:", e)
+        return "<h2>Failed to add student. Please check your input.</h2><a href='/add'>Back to form</a>"
+
 @app.route('/dashboard')
 def dashboard():
-    search_query = request.args.get('search')
+    search_query = request.args.get('search', '').strip()
     if search_query:
-        students = Student.query.filter(Student.fullname.like(f"%{search_query}%")).all()
+        students = Student.query.filter(Student.fullname.ilike(f'%{search_query}%')).all()
     else:
         students = Student.query.all()
     return render_template('index.html', students=students)
 
-# Edit Student
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_student(id):
     student = Student.query.get_or_404(id)
     if request.method == 'POST':
-        student.fullname = request.form['fullname']
-        student.address = request.form['address']
-        student.birthday = request.form['birthday']
-        birth_date = date.fromisoformat(student.birthday)
-        today = date.today()
-        student.age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-        student.sex = request.form['sex']
-        student.course = request.form['course']
-        student.section = request.form['section']
-        student.email = request.form['email']
-        student.hobby = request.form['hobby']
-        student.contact_number = request.form['contact_number']
-        student.guardian_name = request.form['guardian_name']
-        student.guardian_contact = request.form['guardian_contact']
-
+        student.fullname = request.form.get('fullname', student.fullname)
+        student.address = request.form.get('address', student.address)
+        student.birthday = request.form.get('birthday', student.birthday)
+        try:
+            birth_year = int(student.birthday.split("-")[0])
+            student.age = date.today().year - birth_year
+        except:
+            student.age = 0
+        student.sex = request.form.get('sex', student.sex)
+        student.course = request.form.get('course', student.course)
+        student.section = request.form.get('section', student.section)
+        student.email = request.form.get('email', student.email)
+        student.hobby = request.form.get('hobby', student.hobby)
+        student.contact_number = request.form.get('contact_number', student.contact_number)
+        student.guardian_name = request.form.get('guardian_name', student.guardian_name)
+        student.guardian_contact = request.form.get('guardian_contact', student.guardian_contact)
         db.session.commit()
         return redirect(url_for('dashboard'))
-
     return render_template('edit_student.html', student=student)
 
-# Delete Student
 @app.route('/delete/<int:id>')
 def delete_student(id):
     student = Student.query.get_or_404(id)
@@ -106,8 +118,9 @@ def delete_student(id):
     db.session.commit()
     return redirect(url_for('dashboard'))
 
-# ---------------- Run App ----------------
+# ---------------- Main ----------------
 if __name__ == '__main__':
     if not os.path.exists('students.db'):
-        db.create_all()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+        db.create_all()  # Create DB if it doesn't exist
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
