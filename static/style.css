@@ -1,93 +1,81 @@
 /* ---------------- Global Styles ---------------- */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
     margin: 0;
     padding: 0;
     color: #333;
 }
 
-/* ---------------- Container ---------------- */
 .container {
     max-width: 1200px;
     margin: 40px auto;
-    padding: 30px 40px;
+    padding: 30px;
     background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    min-height: 600px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
 /* ---------------- Headings ---------------- */
 h1 {
     text-align: center;
     margin-bottom: 30px;
-    color: #333;
 }
 
 /* ---------------- Actions ---------------- */
 .actions {
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
-.actions form {
-    display: inline-block;
-    margin-left: 10px;
-}
-
 .actions input[type="text"] {
-    padding: 6px 10px;
-    border-radius: 4px;
+    padding: 8px 10px;
     border: 1px solid #ccc;
+    border-radius: 6px;
     font-size: 14px;
 }
 
-.actions button {
-    padding: 6px 12px;
+.actions button, .btn {
+    padding: 8px 14px;
+    border-radius: 6px;
     font-size: 14px;
     cursor: pointer;
+    border: none;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
 }
 
-/* ---------------- Form Inputs ---------------- */
+/* ---------------- Button Colors ---------------- */
+.add-btn { background-color: #28a745; }
+.add-btn:hover { background-color: #218838; }
+
+.edit-btn { background-color: #007bff; }
+.edit-btn:hover { background-color: #0056b3; }
+
+.delete-btn { background-color: #dc3545; }
+.delete-btn:hover { background-color: #c82333; }
+
+.back-btn { background-color: #6c757d; }
+.back-btn:hover { background-color: #5a6268; }
+
+.search-btn { background-color: #343a40; }
+.search-btn:hover { background-color: #23272b; }
+
+/* ---------------- Forms ---------------- */
 form input, form select, form button {
     display: block;
     width: 100%;
+    margin-bottom: 12px;
     padding: 10px;
-    margin: 8px 0 16px 0;
-    border-radius: 5px;
+    border-radius: 6px;
     border: 1px solid #ccc;
+    font-size: 14px;
     box-sizing: border-box;
-    font-size: 14px;
 }
-
-/* ---------------- Buttons ---------------- */
-.btn {
-    text-decoration: none;
-    padding: 8px 14px;
-    border-radius: 5px;
-    font-size: 14px;
-    margin: 2px;
-    transition: 0.3s;
-    cursor: pointer;
-    display: inline-block;
-    text-align: center;
-}
-
-.add-btn { background-color: #4CAF50; color: white; }
-.add-btn:hover { background-color: #45a049; }
-
-.edit-btn { background-color: #2196F3; color: white; }
-.edit-btn:hover { background-color: #0b7dda; }
-
-.delete-btn { background-color: #f44336; color: white; }
-.delete-btn:hover { background-color: #da190b; }
-
-.back-btn { background-color: #888; color: white; }
-.back-btn:hover { background-color: #555; }
-
-.search-btn { background-color: #555; color: white; border: none; border-radius: 4px; }
-.search-btn:hover { background-color: #333; }
 
 /* ---------------- Cards Container ---------------- */
 .cards-container {
@@ -97,23 +85,23 @@ form input, form select, form button {
     justify-content: center;
 }
 
-/* Individual Student Card */
+/* ---------------- Student Card ---------------- */
 .student-card {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     padding: 20px;
     width: 350px;
-    box-sizing: border-box;
     transition: 0.3s;
 }
 
 .student-card:hover {
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 .student-card h2 {
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
+    font-size: 20px;
 }
 
 .student-card p {
@@ -121,18 +109,20 @@ form input, form select, form button {
     font-size: 14px;
 }
 
-/* Card Buttons */
+/* ---------------- Card Buttons ---------------- */
 .card-buttons {
     text-align: center;
     margin-top: 10px;
 }
 
-.card-buttons .btn { display: inline-block; margin: 4px; }
+.card-buttons .btn {
+    margin: 4px;
+}
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 768px) {
     .container { padding: 20px; margin: 20px; }
     .student-card { width: 90%; }
-    .actions input[type="text"] { width: 70%; margin-bottom: 10px; }
-    .actions button { width: 25%; }
+    .actions { flex-direction: column; gap: 8px; }
+    .actions input[type="text"], .actions button { width: 100%; }
 }
