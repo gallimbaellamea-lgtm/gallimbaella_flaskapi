@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 from functools import wraps
 
+# ---------------- Flask Setup ----------------
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -42,7 +43,7 @@ def login_required(f):
 
 # ---------------- Routes ----------------
 
-# First page: if no students, go to Add Student form; else dashboard
+# First page: Add student if none exist, else dashboard
 @app.route('/')
 def first_student_form():
     if Student.query.count() == 0:
@@ -57,7 +58,15 @@ def index():
     students = Student.query.all()
     return render_template('index.html', students=students)
 
-# Add Student
+# Search
+@app.route('/search', methods=['GET'])
+@login_required
+def search_student():
+    query = request.args.get('q', '')
+    students = Student.query.filter(Student.fullname.ilike(f'%{query}%')).all()
+    return render_template('index.html', students=students, search_query=query)
+
+# Add student
 @app.route('/add', methods=['GET', 'POST'])
 @login_required
 def add_student():
@@ -73,10 +82,10 @@ def add_student():
         )
         db.session.add(new_student)
         db.session.commit()
-        return redirect(url_for('index'))  # after adding, go to dashboard
+        return redirect(url_for('index'))
     return render_template('form.html', student=None)
 
-# Edit Student
+# Edit student
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_student(id):
@@ -99,7 +108,7 @@ def edit_student(id):
         return redirect(url_for('index'))
     return render_template('form.html', student=student)
 
-# Delete Student
+# Delete student
 @app.route('/delete/<int:id>')
 @login_required
 def delete_student(id):
@@ -108,20 +117,12 @@ def delete_student(id):
     db.session.commit()
     return redirect(url_for('index'))
 
-# Search Students
-@app.route('/search', methods=['GET'])
-@login_required
-def search_student():
-    query = request.args.get('q', '')
-    students = Student.query.filter(Student.fullname.ilike(f'%{query}%')).all()
-    return render_template('index.html', students=students, search_query=query)
-
-# Login / Logout
+# Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password']  # birthday as simple password
+        password = request.form['password']  # simple: birthday as password
         student = Student.query.filter_by(email=email, birthday=password).first()
         if student:
             session['student_id'] = student.id
@@ -132,6 +133,7 @@ def login():
             return redirect(url_for('login'))
     return render_template('login.html')
 
+# Logout
 @app.route('/logout')
 def logout():
     session.clear()
