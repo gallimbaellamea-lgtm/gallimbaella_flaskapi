@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Edit Student</h1>
+    <form action="{{ url_for('edit_student', student_id=student.id) }}" method="POST" class="form">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="fullname" value="{{ student.fullname }}" required>
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" value="{{ student.address }}" required>
+        </div>
+        <div class="form-group">
+            <label>Birthday</label>
+            <input type="date" name="birthday" value="{{ student.birthday }}" required>
+        </div>
+        <div class="form-group">
+            <label>Sex</label>
+            <select name="sex" required>
+                <option value="Male" {% if student.sex == 'Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if student.sex == 'Female' %}selected{% endif %}>Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Course</label>
+            <select name="course" required>
+                <option value="BSIT" {% if student.course == 'BSIT' %}selected{% endif %}>BSIT</option>
+                <option value="BSOA" {% if student.course == 'BSOA' %}selected{% endif %}>BSOA</option>
+                <option value="BSAG" {% if student.course == 'BSAG' %}selected{% endif %}>BSAG</option>
+                <option value="BSED" {% if student.course == 'BSED' %}selected{% endif %}>BSED</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Section</label>
+            <input type="text" name="section" value="{{ student.section }}" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ student.email }}" required>
+        </div>
+        <div class="form-group">
+            <label>Hobby</label>
+            <input type="text" name="hobby" value="{{ student.hobby }}">
+        </div>
+        <div class="form-group">
+            <label>Contact Number</label>
+            <input type="text" name="contact_number" value="{{ student.contact_number }}">
+        </div>
+        <div class="form-group">
+            <label>Guardian Name</label>
+            <input type="text" name="guardian_name" value="{{ student.guardian_name }}">
+        </div>
+        <div class="form-group">
+            <label>Guardian Contact</label>
+            <input type="text" name="guardian_contact" value="{{ student.guardian_contact }}">
+        </div>
+        <button type="submit" class="btn">Update Student</button>
+        <a href="{{ url_for('dashboard') }}" class="btn back-btn">Back to Dashboard</a>
+    </form>
+</div>
+</body>
+</html>
