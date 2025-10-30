@@ -25,8 +25,6 @@ class Student(db.Model):
     guardian_contact = db.Column(db.String(20))
 
 # ----------------- Routes -----------------
-
-# Dashboard / Index - Show all students
 @app.route('/')
 def dashboard():
     search_query = request.args.get('search')
@@ -36,7 +34,6 @@ def dashboard():
         students = Student.query.all()
     return render_template('index.html', students=students)
 
-# Add Student
 @app.route('/add', methods=['GET', 'POST'])
 def add_student():
     if request.method == 'POST':
@@ -67,12 +64,12 @@ def add_student():
             flash("Student added successfully!", "success")
             return redirect(url_for('dashboard'))
         except Exception as e:
+            db.session.rollback()
             print("Error:", e)
             flash("Failed to add student. Please check your input.", "danger")
             return redirect(url_for('add_student'))
     return render_template('add_student.html')
 
-# Edit Student
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_student(id):
     student = Student.query.get_or_404(id)
@@ -97,12 +94,12 @@ def edit_student(id):
             flash("Student updated successfully!", "success")
             return redirect(url_for('dashboard'))
         except Exception as e:
+            db.session.rollback()
             print("Error:", e)
-            flash("Failed to update student.", "danger")
-            return redirect(url_for('edit_student', id=id))
+            flash("Failed to update student. Please check your input.", "danger")
+            return render_template('edit_student.html', student=student)
     return render_template('edit_student.html', student=student)
 
-# Delete Student
 @app.route('/delete/<int:id>')
 def delete_student(id):
     student = Student.query.get_or_404(id)
@@ -111,6 +108,7 @@ def delete_student(id):
         db.session.commit()
         flash("Student deleted successfully!", "success")
     except Exception as e:
+        db.session.rollback()
         print("Error:", e)
         flash("Failed to delete student.", "danger")
     return redirect(url_for('dashboard'))
