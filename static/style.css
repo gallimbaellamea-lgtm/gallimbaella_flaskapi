@@ -129,3 +129,38 @@ button, .btn {
     max-width: 500px;
     margin: 30px auto;
 }
+/* Button base */
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Add Student button */
+.btn[type="submit"] {
+    background: linear-gradient(90deg, #ff6a00, #ee0979); /* Orange to pink */
+    box-shadow: 0 4px 15px rgba(255, 105, 135, 0.5);
+}
+
+.btn[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 105, 135, 0.6);
+}
+
+/* Back to Dashboard button */
+.back-btn {
+    background: linear-gradient(90deg, #36d1dc, #5b86e5); /* Blue gradient */
+    box-shadow: 0 4px 15px rgba(91, 134, 229, 0.5);
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(91, 134, 229, 0.6);
+}
