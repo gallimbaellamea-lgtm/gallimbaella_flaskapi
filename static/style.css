@@ -1,3 +1,4 @@
+/* Base Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f1f1f1;
@@ -11,7 +12,7 @@ body {
     margin: 30px auto;
 }
 
-h2 {
+h2, h1 {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -32,11 +33,7 @@ h2 {
 .flash.success { background-color: #4CAF50; }
 .flash.danger { background-color: #f44336; }
 
-.search-form {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
+/* Forms */
 input[type=text], input[type=email], input[type=date], select {
     width: 100%;
     padding: 8px;
@@ -46,17 +43,37 @@ input[type=text], input[type=email], input[type=date], select {
     box-sizing: border-box;
 }
 
+.form-container, .form {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    max-width: 500px;
+    margin: 30px auto;
+}
+
+/* Buttons */
 button, .btn {
     padding: 10px 15px;
-    border-radius: 6px;
+    border-radius: 8px;
     border: none;
     cursor: pointer;
     color: white;
     font-weight: bold;
     text-decoration: none;
     display: inline-block;
-    margin: 3px 0;
-    transition: 0.3s ease;
+    margin: 5px 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn[type="submit"] {
+    background: linear-gradient(90deg, #ff6a00, #ee0979);
+    box-shadow: 0 4px 15px rgba(255, 105, 135, 0.5);
+}
+
+.btn[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 105, 135, 0.6);
 }
 
 .add-btn {
@@ -72,17 +89,24 @@ button, .btn {
 }
 
 .back-btn {
-    background: #777;
+    background: linear-gradient(90deg, #36d1dc, #5b86e5);
+    box-shadow: 0 4px 15px rgba(91, 134, 229, 0.5);
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(91, 134, 229, 0.6);
 }
 
 .search-btn {
     background: #2196F3;
 }
 
-.add-btn:hover, .edit-btn:hover, .delete-btn:hover, .back-btn:hover, .search-btn:hover {
+.add-btn:hover, .edit-btn:hover, .delete-btn:hover, .search-btn:hover {
     transform: scale(1.05);
 }
 
+/* Student Cards */
 .students {
     display: flex;
     flex-wrap: wrap;
@@ -121,46 +145,48 @@ button, .btn {
     justify-content: space-between;
 }
 
-.form-container {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.15);
-    max-width: 500px;
-    margin: 30px auto;
-}
-/* Button base */
-.btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    display: inline-block;
-    margin: 5px 0;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .students {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .student-card {
+        width: 90%;
+    }
+
+    .form-container, .form {
+        width: 90%;
+        padding: 20px;
+    }
+
+    button, .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .card-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 
-/* Add Student button */
-.btn[type="submit"] {
-    background: linear-gradient(90deg, #ff6a00, #ee0979); /* Orange to pink */
-    box-shadow: 0 4px 15px rgba(255, 105, 135, 0.5);
-}
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+    }
 
-.btn[type="submit"]:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 105, 135, 0.6);
-}
+    .student-card {
+        padding: 15px;
+    }
 
-/* Back to Dashboard button */
-.back-btn {
-    background: linear-gradient(90deg, #36d1dc, #5b86e5); /* Blue gradient */
-    box-shadow: 0 4px 15px rgba(91, 134, 229, 0.5);
-}
+    input[type=text], input[type=email], input[type=date], select {
+        padding: 10px;
+    }
 
-.back-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(91, 134, 229, 0.6);
+    button, .btn {
+        font-size: 14px;
+        padding: 12px;
+    }
 }
