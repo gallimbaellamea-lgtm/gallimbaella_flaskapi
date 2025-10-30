@@ -1,107 +1,89 @@
-/* ---------------- General ---------------- */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-color: #f1f1f1;
     margin: 0;
     padding: 0;
 }
 
 .container {
+    width: 90%;
     max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    margin: 30px auto;
 }
 
-/* ---------------- Forms ---------------- */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-form input, form select {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-form button {
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    color: white;
-    transition: 0.3s;
-}
-
-form .back-btn {
-    background-color: #777;
-}
-
-form .back-btn:hover {
-    background-color: #555;
-}
-
-form .add-btn {
-    background-color: #4caf50;
-}
-
-form .add-btn:hover {
-    background-color: #45a049;
-}
-
-/* ---------------- Buttons ---------------- */
-.btn {
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    border: none;
-    text-decoration: none;
-    color: white;
-    transition: 0.3s;
-    display: inline-block;
-    min-width: 100px;
+h2 {
     text-align: center;
-}
-
-/* Button colors */
-.add-btn { background-color: #4caf50; }
-.add-btn:hover { background-color: #45a049; }
-
-.edit-btn { background-color: #2196f3; }
-.edit-btn:hover { background-color: #0b7dda; }
-
-.delete-btn { background-color: #f44336; }
-.delete-btn:hover { background-color: #da190b; }
-
-.back-btn { background-color: #777; }
-.back-btn:hover { background-color: #555; }
-
-.search-btn { background-color: #ff9800; }
-.search-btn:hover { background-color: #e68a00; }
-
-/* Dashboard buttons container */
-.actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
 }
 
-.search-form {
-    display: flex;
-    gap: 10px;
+.flash-messages {
+    text-align: center;
+    margin-bottom: 15px;
 }
 
-/* ---------------- Student Cards ---------------- */
-.cards-container {
+.flash {
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    display: inline-block;
+    color: white;
+}
+
+.flash.success { background-color: #4CAF50; }
+.flash.danger { background-color: #f44336; }
+
+.search-form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input[type=text], input[type=email], input[type=date], select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button, .btn {
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin: 3px 0;
+    transition: 0.3s ease;
+}
+
+.add-btn {
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
+}
+
+.edit-btn {
+    background: linear-gradient(90deg, #4CAF50, #45A049);
+}
+
+.delete-btn {
+    background: linear-gradient(90deg, #f44336, #d32f2f);
+}
+
+.back-btn {
+    background: #777;
+}
+
+.search-btn {
+    background: #2196F3;
+}
+
+.add-btn:hover, .edit-btn:hover, .delete-btn:hover, .back-btn:hover, .search-btn:hover {
+    transform: scale(1.05);
+}
+
+.students {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -109,25 +91,27 @@ form .add-btn:hover {
 }
 
 .student-card {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    background: white;
     padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
     width: 300px;
-    transition: 0.3s;
+    transition: transform 0.3s ease;
 }
 
 .student-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px);
 }
 
-.student-card h2 {
+.student-card h3 {
     margin-top: 0;
-    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
 }
 
 .student-card p {
-    margin: 6px 0;
+    margin: 5px 0;
+    color: #555;
     font-size: 14px;
 }
 
@@ -137,47 +121,11 @@ form .add-btn:hover {
     justify-content: space-between;
 }
 
-/* ---------------- Pagination ---------------- */
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.pagination .btn {
-    padding: 6px 12px;
-    font-size: 14px;
-}
-/* Add Student Button */
-.form-container button.btn {
-    background: linear-gradient(90deg, #ff7e5f, #feb47b); /* Gradient color */
-    color: white;
-    border: none;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.form-container button.btn:hover {
-    background: linear-gradient(90deg, #feb47b, #ff7e5f); /* Hover gradient */
-    transform: scale(1.05);
-}
-
-/* ---------------- Responsive ---------------- */
-@media (max-width: 768px) {
-    .cards-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .actions {
-        flex-direction: column;
-        gap: 10px;
-    }
+.form-container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    max-width: 500px;
+    margin: 30px auto;
 }
