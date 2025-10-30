@@ -1,4 +1,4 @@
-/* Base Styles */
+/* ===== Body ===== */
 body {
     font-family: Arial, sans-serif;
     background-color: #f1f1f1;
@@ -6,17 +6,22 @@ body {
     padding: 0;
 }
 
+/* ===== Container ===== */
 .container {
-    width: 90%;
-    max-width: 1200px;
+    width: 95%;
+    max-width: 1400px;
     margin: 30px auto;
+    padding: 10px;
 }
 
-h2, h1 {
+/* ===== Headings ===== */
+h1, h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: #333;
 }
 
+/* ===== Flash Messages ===== */
 .flash-messages {
     text-align: center;
     margin-bottom: 15px;
@@ -33,7 +38,37 @@ h2, h1 {
 .flash.success { background-color: #4CAF50; }
 .flash.danger { background-color: #f44336; }
 
-/* Forms */
+/* ===== Search Form ===== */
+.search-form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-form input[type=text] {
+    width: 60%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.search-btn {
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    background: #2196F3;
+    margin-left: 5px;
+    transition: 0.3s ease;
+}
+
+.search-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ===== Forms ===== */
 input[type=text], input[type=email], input[type=date], select {
     width: 100%;
     padding: 8px;
@@ -52,7 +87,7 @@ input[type=text], input[type=email], input[type=date], select {
     margin: 30px auto;
 }
 
-/* Buttons */
+/* ===== Buttons ===== */
 button, .btn {
     padding: 10px 15px;
     border-radius: 8px;
@@ -64,16 +99,6 @@ button, .btn {
     display: inline-block;
     margin: 5px 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn[type="submit"] {
-    background: linear-gradient(90deg, #ff6a00, #ee0979);
-    box-shadow: 0 4px 15px rgba(255, 105, 135, 0.5);
-}
-
-.btn[type="submit"]:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 105, 135, 0.6);
 }
 
 .add-btn {
@@ -90,28 +115,20 @@ button, .btn {
 
 .back-btn {
     background: linear-gradient(90deg, #36d1dc, #5b86e5);
-    box-shadow: 0 4px 15px rgba(91, 134, 229, 0.5);
 }
 
-.back-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(91, 134, 229, 0.6);
-}
-
-.search-btn {
-    background: #2196F3;
-}
-
-.add-btn:hover, .edit-btn:hover, .delete-btn:hover, .search-btn:hover {
+/* Hover effects for buttons */
+.add-btn:hover, .edit-btn:hover, .delete-btn:hover, .back-btn:hover, .search-btn:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-/* Student Cards */
+/* ===== Student Cards ===== */
 .students {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .student-card {
@@ -119,7 +136,8 @@ button, .btn {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0,0,0,0.15);
-    width: 300px;
+    width: 320px;
+    flex-grow: 1;
     transition: transform 0.3s ease;
 }
 
@@ -139,33 +157,32 @@ button, .btn {
     font-size: 14px;
 }
 
+/* Card buttons */
 .card-buttons {
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
+    gap: 10px;
 }
 
-/* Responsive Design */
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+    .students {
+        justify-content: center;
+    }
+    .student-card {
+        width: 45%;
+    }
+}
+
 @media (max-width: 768px) {
     .students {
         flex-direction: column;
         align-items: center;
     }
-
     .student-card {
         width: 90%;
     }
-
-    .form-container, .form {
-        width: 90%;
-        padding: 20px;
-    }
-
-    button, .btn {
-        width: 100%;
-        text-align: center;
-    }
-
     .card-buttons {
         flex-direction: column;
         gap: 10px;
@@ -173,20 +190,15 @@ button, .btn {
 }
 
 @media (max-width: 480px) {
-    .container {
-        width: 95%;
-    }
-
     .student-card {
+        width: 100%;
         padding: 15px;
     }
-
-    input[type=text], input[type=email], input[type=date], select {
-        padding: 10px;
+    .form-container {
+        padding: 20px;
+        margin: 20px 10px;
     }
-
-    button, .btn {
-        font-size: 14px;
-        padding: 12px;
+    .search-form input[type=text] {
+        width: 80%;
     }
 }
